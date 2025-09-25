@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Maternal Health Risk Predictor</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma; background: #e0f7fa; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;}
+        .card { background:#fff; padding:40px; border-radius:12px; box-shadow:0 8px 16px rgba(0,0,0,0.2); width:450px;}
+        h1 { color:#00796b; margin-bottom:30px;}
+        label { display:block; margin-top:15px; font-weight:bold;}
+        input[type="number"], select { width:100%; padding:10px; margin-top:5px; border-radius:6px; border:1px solid #ccc;}
+        input[type="submit"] { margin-top:25px; padding:12px; width:100%; border:none; border-radius:6px; background:#00796b; color:white; font-size:16px; cursor:pointer; transition:0.3s;}
+        input[type="submit"]:hover { background:#004d40;}
+        .result { margin-top:25px; padding:15px; border-radius:8px; font-size:20px; font-weight:bold; color:#fff; transition:0.3s;}
+        .low { background: linear-gradient(to right,#43a047,#81c784);}
+        .medium { background: linear-gradient(to right,#fbc02d,#fff176); color:#333;}
+        .high { background: linear-gradient(to right,#e53935,#ef9a9a);}
+        .tooltip { position: relative; display: inline-block; cursor: help; }
+        .tooltip .tooltiptext { visibility: hidden; width: 200px; background-color: #555; color: #fff; text-align: center; border-radius:6px; padding:5px; position: absolute; z-index:1; bottom:125%; left:50%; margin-left:-100px; opacity:0; transition:opacity 0.3s;}
+        .tooltip:hover .tooltiptext { visibility: visible; opacity:1;}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Maternal Health Risk Predictor</h1>
+        <form method="POST" action="/predict_form">
+            <label>Age <span class="tooltip">?
+                <span class="tooltiptext">Patient age in years</span>
+            </span></label>
+            <input type="number" name="Age" required>
+
+            <label>Diastolic BP <span class="tooltip">?
+                <span class="tooltiptext">Diastolic blood pressure in mmHg</span>
+            </span></label>
+            <input type="number" name="DiastolicBP" required>
+
+            <label>Blood Sugar (BS) <span class="tooltip">?
+                <span class="tooltiptext">Blood sugar level in mmol/L</span>
+            </span></label>
+            <input type="number" step="0.1" name="BS" required>
+
+            <label>Body Temperature <span class="tooltip">?
+                <span class="tooltiptext">Body temperature in °F</span>
+            </span></label>
+            <input type="number" step="0.1" name="BodyTemp" required>
+
+            <label>BMI <span class="tooltip">?
+                <span class="tooltiptext">Body Mass Index</span>
+            </span></label>
+            <input type="number" step="0.1" name="BMI" required>
+
+            <label>Previous Pregnancies <span class="tooltip">?
+                <span class="tooltiptext">Number of previous pregnancies</span>
+            </span></label>
+            <input type="number" name="Pregnancies" required>
+
+            <label>Hypertension <span class="tooltip">?
+                <span class="tooltiptext">Existing hypertension (Yes/No)</span>
+            </span></label>
+            <select name="Hypertension" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+
+            <label>Diabetes <span class="tooltip">?
+                <span class="tooltiptext">Existing diabetes (Yes/No)</span>
+            </span></label>
+            <select name="Diabetes" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+
+            <input type="submit" value="Predict Risk">
+        </form>
+
+        {% if risk %}
+            <div class="result {{ risk_class }}">
+                Predicted Risk Level: {{ risk_text }}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
